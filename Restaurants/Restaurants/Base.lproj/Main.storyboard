@@ -14,13 +14,27 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ul6-Sk-bqW">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="ul6-Sk-bqW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="MIJ-oC-GQT"/>
+                            <constraint firstItem="ul6-Sk-bqW" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Y3p-Ks-CK0"/>
+                            <constraint firstItem="ul6-Sk-bqW" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ghf-3E-dms"/>
+                            <constraint firstItem="ul6-Sk-bqW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="mSf-Qo-HTy"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="ul6-Sk-bqW" id="vdy-bN-7gD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="118"/>
+            <point key="canvasLocation" x="137.68115942028987" y="117.85714285714285"/>
         </scene>
     </scenes>
 </document>
