@@ -12,6 +12,7 @@ import MapKit
 protocol RestaurantMapDataUpdater: class {
     func reloadMapView()
     func setError(error:APIError)
+    func showDetail(restaurant: RestaurantModel)
 }
 
 class RestaurantMapViewModel: NSObject {
@@ -44,15 +45,8 @@ class RestaurantMapViewModel: NSObject {
     func getAnnotations() -> [MKAnnotation]{
         var annotationArray:[MKAnnotation] = []
         for restaurant in restaurantList{
-            if let lat = restaurant.location?.lat, let lng = restaurant.location?.lng{
-                let restaurantLocation = CLLocationCoordinate2DMake(lat, lng)
-                let annotation = RestaurantMapAnnotation()
-                annotation.coordinate = restaurantLocation
-                annotation.title = restaurant.name
-                annotationArray.append(annotation)
-                
-            }
-            
+            let annotation = RestaurantMapAnnotation(restaurant: restaurant)
+            annotationArray.append(annotation)
         }
         return annotationArray
     }
@@ -65,23 +59,33 @@ extension RestaurantMapViewModel:MKMapViewDelegate{
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard annotation is MKPointAnnotation else { return nil }
+        if let annotationObj = annotation as? RestaurantMapAnnotation{
+            let identifier = AppIdentifierStrings.kRestaurantAnnotationReuseIdentifier
+            if let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? RestaurantMapAnnotationView{
+                annotationView.annotation = annotation
+                annotationView.imagePath = annotationObj.iconPath
+                annotationView.canShowCallout = true
+                annotationView.rightCalloutAccessoryView = UIButton.init(type: .detailDisclosure) as UIButton
+                return annotationView
 
-        let identifier = "Annotation"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            }
+            else {
+                let annotationView = RestaurantMapAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView.imagePath = annotationObj.iconPath
+                annotationView.canShowCallout = true
+                annotationView.rightCalloutAccessoryView = UIButton.init(type: .detailDisclosure) as UIButton
+                return annotationView
 
-        if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView!.canShowCallout = true
-        } else {
-            annotationView!.annotation = annotation
+            }
         }
-
-        return annotationView
+        return nil
     }
-    
-//    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
-//        self.getRestaurantList(mapRect:mapView.visibleMapRect)
-//
-//    }
+
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if control == view.rightCalloutAccessoryView {
+            if let annotation = view.annotation as? RestaurantMapAnnotation, let restaurant = annotation.restaurantObj {
+                delegate?.showDetail(restaurant: restaurant)
+            }
+        }
+    }
 }

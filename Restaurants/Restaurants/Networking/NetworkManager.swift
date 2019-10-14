@@ -99,19 +99,19 @@ extension NetworkManager {
     func downloadImage(with request: URLRequest, completion: @escaping (Result<UIImage?, APIError>) -> Void) {
         if Reachability.isConnectedToNetwork(){
             if let urlString = request.url?.absoluteString{
-//                if let cachedData = CacheManager.shared().object(forKey: urlString){
-//                    if let image = UIImage.init(data: cachedData){
-//                        completion(.success(image))
-//                    }
-//                    else{
-//                        completion(.failure(.invalidData))
-//                    }
-//                }
-//                else{
+                if let cachedData = CacheManager.shared().object(forKey: urlString){
+                    if let image = UIImage.init(data: cachedData){
+                        completion(.success(image))
+                    }
+                    else{
+                        completion(.failure(.invalidData))
+                    }
+                }
+                else{
                     let task = session.dataTask(with: request, completionHandler: { data, response, error in
                         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                             if let dataObj = data, error == nil {
-//                                CacheManager.shared().setObject(data: dataObj, forKey: urlString)
+                                CacheManager.shared().setObject(data: dataObj, forKey: urlString)
                                 if let image = UIImage.init(data: dataObj){
                                     completion(.success(image))
                                 }
@@ -125,7 +125,7 @@ extension NetworkManager {
                     task.resume()
                 }
             }
-//        }
+        }
         else{
             completion(Result.failure(.noInternetError))
         }

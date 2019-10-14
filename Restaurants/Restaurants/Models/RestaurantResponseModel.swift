@@ -30,6 +30,7 @@ struct RestaurantModel:Decodable {
     let categories:[CategoryModel]?
     let referralId:String?
     let hasPerk:Bool?
+    let delivery:[DeliveryModel]?
     let venuePage:[String:String]?
 }
 
@@ -60,4 +61,21 @@ struct CategoryModel:Decodable{
 struct IconModel:Decodable{
     let prefix:String?
     let suffix:String?
+}
+
+struct DeliveryModel:Decodable{
+    let id:String?
+    let url:String?
+    let provider:ProviderModel?
+}
+
+struct ProviderModel:Decodable{
+    let name:String?
+    let icon:ProviderIconModel?
+}
+
+struct ProviderIconModel:Decodable{
+    let name:String?
+    let sizes:[Int]
+    let prefix:String?
 }

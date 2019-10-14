@@ -19,9 +19,13 @@ class RestaurantMapViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
+        setupView()
         setupLocationManager()
         getCurrentLocation()
+    }
+    
+    func setupView(){
+        self.title = "Restaurants"
         viewModel.delegate = self
     }
     
@@ -41,16 +45,18 @@ class RestaurantMapViewController: UIViewController {
         LocationManager.shared.start()
     }
     
-
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.identifier == AppIdentifierStrings.kShowRestaurantDetailSegueIdentifier{
+            if let detailView = segue.destination as? RestaurantDetailViewController, let restaurant = sender as? RestaurantModel{
+                detailView.setRestaurant(restaurantObj: restaurant)
+            }
+        }
     }
-    */
 
 }
 
@@ -79,6 +85,10 @@ extension RestaurantMapViewController:LocationManagerDelegate{
 }
 
 extension RestaurantMapViewController:RestaurantMapDataUpdater{
+    func showDetail(restaurant: RestaurantModel) {
+        self.performSegue(withIdentifier: AppIdentifierStrings.kShowRestaurantDetailSegueIdentifier, sender: restaurant)
+    }
+    
     func reloadMapView() {
         DispatchQueue.main.async() { () -> Void in
             self.activityStopAnimating()

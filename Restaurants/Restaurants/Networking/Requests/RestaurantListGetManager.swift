@@ -15,7 +15,7 @@ class RestaurantListGetRequest: BaseRequest {
     //https://api.foursquare.com/v2/venues/search?ll=40.74224,-73.99386&client_id=LRB1YHLYKJXM1A4SY0ONCGNNYBDER5VRIWJGU3GFBHVOIRJ4&client_secret=FJGGHUD5QQ40ELOSYUUMYUE3ZGKW1THMF1SD32VDZFBVDMFE&v=20191012
 
     init(northEast: String, southWest: String){
-        urlString = NetworkData.kBaseURL + NetworkData.kFoodCategoryEndPoint + "&" + NetworkData.kClientIdEndPoint + "&" + NetworkData.kClientSecretEndPoint + "&" + NetworkData.kNorthEastEndPoint + northEast + "&" + NetworkData.kSouthWestEndPoint + southWest + "&v=20191012"
+        urlString = NetworkData.kBaseURL + NetworkData.kFoodCategoryEndPoint + "&" + NetworkData.kClientIdEndPoint + "&" + NetworkData.kClientSecretEndPoint + "&" + NetworkData.kNorthEastEndPoint + northEast + "&" + NetworkData.kSouthWestEndPoint + southWest + "&" + NetworkData.kVersion + Date().getCurrentDateString()
     }
 }
 

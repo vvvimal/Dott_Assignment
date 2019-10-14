@@ -53,3 +53,11 @@ extension UIViewController {
         self.view.isUserInteractionEnabled = true
     }
 }
+
+extension Date{
+    func getCurrentDateString()->String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        return dateFormatter.string(from: self)
+    }
+}

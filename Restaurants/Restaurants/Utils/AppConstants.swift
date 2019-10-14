@@ -16,6 +16,7 @@ struct NetworkData {
     
     static let kNorthEastEndPoint = "ne="
     static let kSouthWestEndPoint = "sw="
+    static let kVersion = "v="
 
 
 }
@@ -23,8 +24,8 @@ struct NetworkData {
 
 /// Constant String used in the app
 struct AppIdentifierStrings {
-    static var kWeatherListViewCellReuseIdentifier = "WeatherListViewCellIdentifier"
-    static var kWeatherDetailViewCellReuseIdentifier = "WeatherDetailViewCellReuseIdentifier"
+    static let kShowRestaurantDetailSegueIdentifier = "showRestaurantDetail"
+    static let kRestaurantAnnotationReuseIdentifier = "RestaurantAnnotation"
 }
 
 /// API related errors
