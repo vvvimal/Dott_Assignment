@@ -30,32 +30,26 @@ extension UIViewController {
     /// Activity Indicator start animation
     
     func activityStartAnimating() {
-        let backgroundView = UIView()
-        backgroundView.frame = CGRect.init(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.width, height: self.view.bounds.height)
-        backgroundView.backgroundColor = UIColor.clear
-        backgroundView.tag = 475647
-        
-        var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
-        activityIndicator = UIActivityIndicatorView(frame: CGRect.init(x: 0, y: 0, width: 50, height: 50))
-        activityIndicator.center = self.view.center
-        activityIndicator.hidesWhenStopped = true
-        
-        activityIndicator.style = UIActivityIndicatorView.Style.whiteLarge
-        activityIndicator.color = UIColor.gray
+        let activityIndicator = UIActivityIndicatorView(style: .gray)
         activityIndicator.startAnimating()
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         self.view.isUserInteractionEnabled = false
         
-        backgroundView.addSubview(activityIndicator)
-        
-        self.view.addSubview(backgroundView)
-        self.view.bringSubviewToFront(backgroundView)
-        
+        self.view.addSubview(activityIndicator)
+
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+        ])
     }
     
     /// Activity Indicator stop animation
     func activityStopAnimating() {
-        if let background = self.view.viewWithTag(475647){
-            background.removeFromSuperview()
+        for view in self.view.subviews {
+            if let subView = view as? UIActivityIndicatorView {
+                subView.removeFromSuperview()
+                break
+            }
         }
         self.view.isUserInteractionEnabled = true
     }

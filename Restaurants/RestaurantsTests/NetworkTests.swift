@@ -12,7 +12,7 @@ import XCTest
 struct UnsuccessfulResponseRequest: BaseRequest {
     
     var urlString: String {
-        return "https://api.foursquare.com/v2/venues/search?ll=40.74224,-73.99386&client_id=LRB1YHLYKJXM1A4SY0ONCGNNYBDER5VRIWJGU3GFBHVOIRJ4&client_secret=FJGGHUD5QQ40ELOSYUUMYUE3ZGKW1THMF1SD32VDZFBVDMFE"
+        return "https://api.foursquare.com/v2/venues/search?ll=340.74224,-573.99386&client_id=LRB1YHLYKJXM1A4SY0ONCGNNYBDER5VRIWJGU3GFBHVOIRJ4&client_secret=FJGGHUD5QQ40ELOSYUUMYUE3ZGKW1THMF1SD32VDZFBVDMFE&v=16102019"
     }
 }
 

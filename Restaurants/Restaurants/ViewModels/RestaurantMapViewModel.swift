@@ -47,7 +47,7 @@ class RestaurantMapViewModel: NSObject {
     ///
     /// - Parameter mapRect: MKMapRect object
     /// - Returns: String for NorthEast and SouthWest coordinates
-    func getCoordinates(mapRect:MKMapRect) -> (String, String){
+    private func getCoordinates(mapRect:MKMapRect) -> (String, String){
         let neMapPoint = MKMapPoint(x: mapRect.maxX, y: mapRect.origin.y)
         let swMapPoint = MKMapPoint(x: mapRect.origin.x, y: mapRect.maxY)
         
