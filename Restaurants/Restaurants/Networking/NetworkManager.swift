@@ -40,7 +40,6 @@ extension NetworkManager {
                         let genericModel = try JSONDecoder().decode(decodingType, from: dataObj)
                         completion(genericModel, nil)
                     } catch {
-                        print(error)
                         completion(nil, .jsonConversionFailure)
                     }
                 }

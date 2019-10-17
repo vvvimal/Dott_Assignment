@@ -106,7 +106,6 @@ extension RestaurantsTests: RestaurantMapDataUpdater{
     }
     
     func showDetail(restaurant: RestaurantModel) {
-        print("show detail")
     }
     
     
