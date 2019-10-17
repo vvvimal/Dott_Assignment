@@ -34,12 +34,6 @@ extension NetworkManager {
                 return
             }
             
-            print("---------------------------")
-            print("URL:\(String(describing: response?.url?.absoluteString))")
-            print("data: \(String(describing: String(data: data!, encoding: String.Encoding.utf8)))")
-            print("---------------------------")
-            
-            
             if httpResponse.statusCode == 200 {
                 if let dataObj = data{
                     do {

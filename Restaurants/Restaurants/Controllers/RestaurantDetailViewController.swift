@@ -10,55 +10,49 @@ import UIKit
 
 class RestaurantDetailViewController: UIViewController {
 
-    @IBOutlet weak var detailLabel: UILabel!
+    /// Detail Label
+    lazy var detailLabel: UILabel = {
+        let dl = UILabel()
+        dl.numberOfLines = 0
+        dl.font = UIFont.systemFont(ofSize: 20)
+        self.view.addSubview(dl)
+        dl.translatesAutoresizingMaskIntoConstraints = false
+        return dl
+    }()
     
-    private var restaurant:RestaurantModel?
+    let viewModel = RestaurantDetailViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        setupRestaurantDetails()
     }
     
+    /// Set restaurant object
+    ///
+    /// - Parameter restaurantObj: RestaurantModel object
     func setRestaurant(restaurantObj: RestaurantModel) {
-        self.restaurant = restaurantObj
+        setupView()
+        viewModel.restaurant = restaurantObj
+        setRestaurantDetail()
     }
     
-    func setupRestaurantDetails(){
-        self.title = self.restaurant?.name
-        var addressString = "Address: "
-        if let formattedStringArray = self.restaurant?.location?.formattedAddress{
-            for string in formattedStringArray{
-                addressString.append(string)
-                if self.restaurant?.location?.formattedAddress?.last != string{
-                    addressString.append(", ")
-                }
-            }
-        }
-        else{
-            addressString.append("NA")
-        }
-        var categoryString = "Category: "
-        if let categoryDetail = self.restaurant?.categories, categoryDetail.count > 0{
-            categoryString.append(categoryDetail[0].name ?? "NA")
-        }
-        else{
-            categoryString.append("NA")
-        }
+    /// Setup view
+    func setupView(){
+        NSLayoutConstraint.activate([
+            detailLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100.0),
+            detailLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10.0),
+            detailLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10.0),
+            detailLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 21)
+            ])
+        detailLabel.isAccessibilityElement = true
+        detailLabel.accessibilityLabel = "detailLabel"
         
-        self.detailLabel.text = "\(addressString)\n\(categoryString)"
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    /// Setup restaurant detail text
+    func setRestaurantDetail(){
+        self.title = viewModel.restaurant?.name
+        self.detailLabel.text = viewModel.getRestaurantDetailString()
     }
-    */
-
 }

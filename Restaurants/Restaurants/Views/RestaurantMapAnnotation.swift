@@ -9,7 +9,8 @@
 import UIKit
 import MapKit
 
-class RestaurantMapAnnotation: NSObject, MKAnnotation {
+/// MKAnnotation reusable object
+class RestaurantMapAnnotation: NSObject, MKAnnotation{
     var coordinate: CLLocationCoordinate2D
     var title: String?
     var iconPath: String?
@@ -17,6 +18,9 @@ class RestaurantMapAnnotation: NSObject, MKAnnotation {
 
     var restaurantObj: RestaurantModel?
     
+    /// Init with restaurant model
+    ///
+    /// - Parameter restaurant: Restaurant model object
     convenience init(restaurant: RestaurantModel) {
         if let lat = restaurant.location?.lat, let lng = restaurant.location?.lng{
             let restaurantLocation = CLLocationCoordinate2DMake(lat, lng)
@@ -36,13 +40,21 @@ class RestaurantMapAnnotation: NSObject, MKAnnotation {
 
     }
 
+    /// Init with parameters
+    ///
+    /// - Parameters:
+    ///   - coordinate: CLLocationCoordinate2D
+    ///   - title: Optional string
+    ///   - iconPath: iconPath string
     private init(coordinate: CLLocationCoordinate2D, title:String?, iconPath:String) {
         self.coordinate = coordinate
         self.title = title
         self.iconPath = iconPath
         self.colour = UIColor.white
+
     }
     
+    /// Init method
     private override init() {
         self.coordinate = CLLocationCoordinate2D()
         self.title = nil
@@ -51,28 +63,39 @@ class RestaurantMapAnnotation: NSObject, MKAnnotation {
     }
 }
 
+/// MKAnnotationView reusable view
+
 class RestaurantMapAnnotationView: MKAnnotationView {
     private var imageView: UIImageView!
     private let imageDownloadManager = ImageDownloadManager()
     
+    /// Init with annotation and identifier
+    ///
+    /// - Parameters:
+    ///   - annotation: Annotation object
+    ///   - reuseIdentifier: Identifier string
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         
         self.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
         self.imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
+        self.imageView.image = UIImage.init(named: "RestaurantPinIcon")
         self.addSubview(self.imageView)
         
         self.imageView.layer.cornerRadius = 5.0
         self.imageView.layer.masksToBounds = true
     }
     
+    /// Init method
+    ///
+    /// - Parameter aDecoder: decoder object
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// Image path for the MKAnnoation imageview
     var imagePath: String? {
         didSet {
-            self.imageView.image = UIImage.init(named: "RestaurantPinIcon")
             if let imagePathObj = imagePath{
                 let imageDownloadRequest = ImageDownloadRequest(imagePath: imagePathObj)
                 imageDownloadManager.getImageFile(from: imageDownloadRequest, completion: { [weak self] result in

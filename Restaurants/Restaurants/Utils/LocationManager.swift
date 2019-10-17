@@ -12,7 +12,7 @@ import CoreLocation
 
 protocol LocationManagerDelegate {
     func locationPermissionError()
-    func didGetLocation(location:CLLocation)
+    func didGetNewLocation(location:CLLocation?)
     func setError(error:Error)
 }
 
@@ -30,27 +30,14 @@ class LocationManager: NSObject {
     
     var delegate: LocationManagerDelegate?
     
-    
-    // MARK: - Enums
-    
-    enum DistanceValue: Int {
-        case meters, miles
-    }
-    
-    // MARK: - Measuring properties
-    
-    private var startTimestamp = 0.0
-    
     // MARK: - Open data
     
     var currentLocation: CLLocation?
     
-    var previousLocation: CLLocation?
     
-    // MARK: - Values
-    
-    private let metersPerMile = 1609.34
-    
+    // MARK: - Open methods
+
+    /// Start the location updation
     func start() {
         let status = CLLocationManager.authorizationStatus()
         
@@ -65,22 +52,9 @@ class LocationManager: NSObject {
         }
     }
     
-    func logOut() {
+    /// Stop the location updation
+    func stop() {
         manager.stopUpdatingLocation()
-    }
-    
-}
-
-// MARK: - Mode managing
-
-extension LocationManager {
-    
-    open func enterBackground() {
-        manager.stopUpdatingLocation()
-    }
-    
-    open func enterForeground() {
-        manager.startUpdatingLocation()
     }
     
 }
@@ -89,7 +63,12 @@ extension LocationManager {
 
 extension LocationManager: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    /// Location manager did change authorization
+    ///
+    /// - Parameters:
+    ///   - manager: CLLocationManager object
+    ///   - status: Authorization status
+    internal func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             manager.requestLocation()
@@ -100,36 +79,56 @@ extension LocationManager: CLLocationManagerDelegate {
         
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    /// Location manager did get location
+    ///
+    /// - Parameters:
+    ///   - manager: CLLocationManager object
+    ///   - locations: Location array
+    internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let lastLocation = locations.last else { return }
         
         let applicationState = UIApplication.shared.applicationState
         
         switch applicationState {
-        case .active, .inactive:
-            updateLocation(lastLocation)
-        case .background:
+        case .active, .inactive, .background:
             updateLocation(lastLocation)
         @unknown default:
             fatalError("Location Tracking Error")
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
+    /// Location fetch did fail method
+    ///
+    /// - Parameters:
+    ///   - manager: CLLocationManager object
+    ///   - error: Error object
+    internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         delegate?.setError(error: error)
     }
     
-    }
+}
 
+// MARK: Manager methods
 extension LocationManager {
     
-    // MARK: - Managers
-    
+    /// Update location depending on new location
+    ///
+    /// - Parameter location: CLLocation object
     private func updateLocation(_ location: CLLocation) {
-        delegate?.didGetLocation(location: location)
-        manager.stopUpdatingLocation()
-        previousLocation = location
+        delegate?.didGetNewLocation(location: isNewLocation(location) ? location : nil)
+        self.stop()
+    }
+    
+    /// Is new location other than current location
+    ///
+    /// - Parameter location: CLLocation object
+    /// - Returns: Bool
+    private func isNewLocation(_ location: CLLocation) -> Bool{
+        if self.currentLocation?.coordinate.latitude == location.coordinate.latitude && self.currentLocation?.coordinate.longitude == location.coordinate.longitude{
+            return false
+        }
+        self.currentLocation = location
+        return true
     }
     
 }

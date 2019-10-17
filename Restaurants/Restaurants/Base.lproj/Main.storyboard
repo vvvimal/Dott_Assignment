@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vWJ-lz-ErW">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vWJ-lz-ErW">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,23 +33,11 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ul6-Sk-bqW">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
-                            </mapView>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="ul6-Sk-bqW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="MIJ-oC-GQT"/>
-                            <constraint firstItem="ul6-Sk-bqW" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Y3p-Ks-CK0"/>
-                            <constraint firstItem="ul6-Sk-bqW" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ghf-3E-dms"/>
-                            <constraint firstItem="ul6-Sk-bqW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="mSf-Qo-HTy"/>
-                        </constraints>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="jbz-Aw-JsF"/>
                     <connections>
-                        <outlet property="mapView" destination="ul6-Sk-bqW" id="vdy-bN-7gD"/>
                         <segue destination="ntL-Kf-hhM" kind="show" identifier="showRestaurantDetail" id="gu5-Ur-q8b"/>
                     </connections>
                 </viewController>
@@ -61,29 +52,10 @@
                     <view key="view" contentMode="scaleToFill" id="PuT-t2-N4q">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ic-eB-WUe">
-                                <rect key="frame" x="20" y="437.5" width="374" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="OD7-Pl-pnA"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="4As-ue-4dl" firstAttribute="trailing" secondItem="8Ic-eB-WUe" secondAttribute="trailing" constant="20" id="Fo5-ga-eAd"/>
-                            <constraint firstItem="8Ic-eB-WUe" firstAttribute="centerY" secondItem="PuT-t2-N4q" secondAttribute="centerY" id="lep-Tq-L57"/>
-                            <constraint firstItem="8Ic-eB-WUe" firstAttribute="leading" secondItem="4As-ue-4dl" secondAttribute="leading" constant="20" id="v36-Dk-gyj"/>
-                        </constraints>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="4As-ue-4dl"/>
                     </view>
                     <navigationItem key="navigationItem" id="etZ-0L-Yic"/>
-                    <connections>
-                        <outlet property="detailLabel" destination="8Ic-eB-WUe" id="I1g-Pb-6Kk"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eoo-ik-pbq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

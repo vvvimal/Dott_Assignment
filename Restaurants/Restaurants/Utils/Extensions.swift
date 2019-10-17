@@ -10,19 +10,25 @@ import UIKit
 
 extension UIViewController {
     
-    /// Showing alert for generic messages
+    /// Showing alert for generic messages with action
     ///
     /// - Parameters:
     ///   - title: title of the message
     ///   - message: message body
-    func showAlert(withTitle title: String, message : String) {
+    ///   - completionHandler: optional action handler
+    func showAlert(withTitle title: String, message : String, completionHandler:(() -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let OKAction = UIAlertAction(title: "OK", style: .cancel) { action in}
+        let OKAction = UIAlertAction(title: "OK", style: .cancel) { action in
+            if let actionHandler = completionHandler{
+                actionHandler()
+            }
+        }
         alertController.addAction(OKAction)
         self.present(alertController, animated: true, completion: nil)
     }
     
     /// Activity Indicator start animation
+    
     func activityStartAnimating() {
         let backgroundView = UIView()
         backgroundView.frame = CGRect.init(x: self.view.bounds.origin.x, y: self.view.bounds.origin.y, width: self.view.bounds.width, height: self.view.bounds.height)
@@ -33,7 +39,8 @@ extension UIViewController {
         activityIndicator = UIActivityIndicatorView(frame: CGRect.init(x: 0, y: 0, width: 50, height: 50))
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.style = UIActivityIndicatorView.Style.medium
+        
+        activityIndicator.style = UIActivityIndicatorView.Style.whiteLarge
         activityIndicator.color = UIColor.gray
         activityIndicator.startAnimating()
         self.view.isUserInteractionEnabled = false

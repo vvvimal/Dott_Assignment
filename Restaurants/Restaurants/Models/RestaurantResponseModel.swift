@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+/// Response Model from API
 struct RestaurantResponseModel: Decodable {
     let meta: MetaModel?
     let response:ResponseModel
@@ -30,7 +32,7 @@ struct RestaurantModel:Decodable {
     let categories:[CategoryModel]?
     let referralId:String?
     let hasPerk:Bool?
-    let delivery:[DeliveryModel]?
+    let delivery:DeliveryModel?
     let venuePage:[String:String]?
 }
 

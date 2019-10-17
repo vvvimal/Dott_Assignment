@@ -11,37 +11,49 @@ import MapKit
 
 class RestaurantMapViewController: UIViewController {
 
-    @IBOutlet weak var mapView: MKMapView!
+    var mapView: MKMapView!
     let viewModel = RestaurantMapViewModel()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         setupView()
-        setupLocationManager()
+        setupMapView()
         getCurrentLocation()
     }
     
+    /// Setup initial view
     func setupView(){
         self.title = "Restaurants"
         viewModel.delegate = self
-    }
-    
-    func setupLocationManager(){
         LocationManager.shared.delegate = self
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Near Me",  style: .plain, target: self, action: #selector(self.getCurrentLocation))
+
     }
     
-    func setupMapView(userLocation: CLLocation){
+    /// Set up map view
+    func setupMapView(){
+        mapView = MKMapView.init(frame: self.view.frame)
+        self.view.addSubview(mapView)
+    }
+    
+    /// Setup map region depending on current location
+    ///
+    /// - Parameter userLocation: CLLocation object
+    func setupMapRegion(userLocation: CLLocation){
+        self.activityStartAnimating()
+        mapView.delegate = viewModel
         let coordinates = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude,longitude: userLocation.coordinate.longitude)
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: coordinates, span: span)
-        mapView.delegate = viewModel;
         mapView.setRegion(region, animated: false)
     }
     
-    func getCurrentLocation(){
+    /// Get current location API call
+    @objc func getCurrentLocation(){
+        self.activityStartAnimating()
         LocationManager.shared.start()
     }
     
@@ -61,41 +73,53 @@ class RestaurantMapViewController: UIViewController {
 }
 
 extension RestaurantMapViewController:LocationManagerDelegate{
+    
+    /// Set update location error
+    ///
+    /// - Parameter error: Error object
     func setError(error: Error) {
-        self.showAlert(withTitle: "Error", message: error.localizedDescription)
+        DispatchQueue.main.async() { () -> Void in
+            self.activityStopAnimating()
+            self.showAlert(withTitle: "Error", message: error.localizedDescription)
+        }
     }
     
+    /// Location manager permission error
     func locationPermissionError() {
-        let alertController = UIAlertController(title: "No permission",
-                                                message: "In order to work, app needs your location", preferredStyle: .alert)
-        let openSettings = UIAlertAction(title: "Open settings", style: .default, handler: {
-            (action) -> Void in
+        self.showAlert(withTitle: "No permission", message: "In order to work, app needs your location", completionHandler: {
             guard let URL = Foundation.URL(string: UIApplication.openSettingsURLString) else { return }
             UIApplication.shared.open(URL, options: [:], completionHandler: nil)
-            
         })
-        alertController.addAction(openSettings)
-        self.present(alertController, animated: true, completion: nil)
     }
     
-    func didGetLocation(location: CLLocation) {
-        self.setupMapView(userLocation: location)
+    /// Did get new location from location manager
+    ///
+    /// - Parameter location: CLLocation object
+    func didGetNewLocation(location:CLLocation?) {
+        DispatchQueue.main.async() { () -> Void in
+            self.activityStopAnimating()
+            guard let newLocation = location else{ return }
+            self.setupMapRegion(userLocation: newLocation)
+        }
     }
 
 }
 
 extension RestaurantMapViewController:RestaurantMapDataUpdater{
+    /// Show Detail
+    ///
+    /// - Parameter restaurant: restaurant model
     func showDetail(restaurant: RestaurantModel) {
         self.performSegue(withIdentifier: AppIdentifierStrings.kShowRestaurantDetailSegueIdentifier, sender: restaurant)
     }
     
+    /// Reload Map View
     func reloadMapView() {
         DispatchQueue.main.async() { () -> Void in
             self.activityStopAnimating()
             self.mapView.removeAnnotations(self.mapView.annotations)
             self.mapView.addAnnotations(self.viewModel.getAnnotations())
         }
-        
     }
     
     /// Error received from API request
