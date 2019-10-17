@@ -35,4 +35,4 @@ Restaurant Near Me(Foursquare API)
 4. RestaurantDetailTests - Testing the restaurant detail with and without data.
 5. RestaurantUITests - Testing the Pull to refresh and UIApplication background and foreground.
 
-Note: The code is compiled in Xcode 10.3 with support for iOS SDK 11.0 and above. 
+Note: The code is compiled in Xcode 10.3(faced issues in Unit and UI test on Xcode 11) with support for iOS SDK 11.0 and above. 
